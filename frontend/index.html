@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Human Filler</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="logo">
+            🧍 Human Filler
+        </div>
+
+        <div class="tagline">
+            Because apparently we needed to know how many people fit in a bathtub.
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-container">
+
+
+        <!-- ===== TITLE SECTION ===== -->
+
+        <section class="hero">
+
+            <p class="small-title">THE MOST IMPORTANT QUESTION OF YOUR LIFE</p>
+
+            <h1>
+                How Many People<br>
+                Can You Fit?
+            </h1>
+
+            <p class="subtitle">
+                Drag people into an object and find out.
+            </p>
+
+        </section>
+
+
+        <!-- ===== OBJECT SELECTION ===== -->
+
+        <section class="object-selection">
+
+            <h2>Choose your object</h2>
+
+            <div class="object-buttons">
+
+                <button class="object-btn active" data-object="pool">
+                    🏊
+                    <span>Swimming Pool</span>
+                </button>
+
+                <button class="object-btn" data-object="elevator">
+                    🛗
+                    <span>Elevator</span>
+                </button>
+
+                <button class="object-btn" data-object="bathtub">
+                    🛁
+                    <span>Bathtub</span>
+                </button>
+
+                <button class="object-btn" data-object="bed">
+                    🛏️
+                    <span>Bed</span>
+                </button>
+
+                <button class="object-btn" data-object="car">
+                    🚗
+                    <span>Car</span>
+                </button>
+
+                <button class="object-btn" data-object="airplane">
+                    ✈️
+                    <span>Airplane</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===== GAME AREA ===== -->
+
+        <section class="game-area">
+
+
+            <!-- ===== PEOPLE PANEL ===== -->
+
+            <div class="people-panel">
+
+                <div class="panel-title">
+
+                    <h2>People</h2>
+
+                    <span class="drag-hint">
+                        Drag me!
+                    </span>
+
+                </div>
+
+
+                <!-- Person to drag -->
+
+                <div class="people-container">
+
+                    <div class="person draggable" draggable="true">
+                        🧍
+                    </div>
+
+                    <div class="person draggable" draggable="true">
+                        🧍
+                    </div>
+
+                    <div class="person draggable" draggable="true">
+                        🧍
+                    </div>
+
+                    <div class="person draggable" draggable="true">
+                        🧍
+                    </div>
+
+                </div>
+
+
+                <!-- Add more people -->
+
+                <button id="addPersonBtn" class="add-person-btn">
+                    + Add Person
+                </button>
+
+                <p class="panel-info">
+                    Drag a person into the object →
+                </p>
+
+            </div>
+
+
+            <!-- ===== OBJECT / DROP AREA ===== -->
+
+            <div class="object-panel">
+
+                <div class="object-header">
+
+                    <div>
+                        <p class="object-label">CURRENT OBJECT</p>
+
+                        <h2 id="objectName">
+                            Swimming Pool
+                        </h2>
+                    </div>
+
+                    <div class="capacity">
+                        <span>PEOPLE</span>
+                        <strong id="peopleCount">0</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- DROP ZONE -->
+
+                <div
+                    id="dropZone"
+                    class="drop-zone pool"
+                >
+
+                    <div class="drop-message">
+
+                        <div class="drop-icon">
+                            👇
+                        </div>
+
+                        <p>
+                            DROP PEOPLE HERE
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Status message -->
+
+                <div id="statusMessage" class="status-message">
+                    Nobody has entered yet. They're probably smarter than us.
+                </div>
+
+
+                <!-- Controls -->
+
+                <div class="controls">
+
+                    <button id="resetBtn" class="reset-btn">
+                        🔄 Reset
+                    </button>
+
+                    <button id="submitBtn" class="submit-btn">
+                        🚀 Submit Score
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===== SCORE SECTION ===== -->
+
+        <section class="score-section">
+
+            <div class="score-card">
+
+                <p>YOUR CURRENT SCORE</p>
+
+                <div class="big-number" id="score">
+                    0
+                </div>
+
+                <span>people inside</span>
+
+            </div>
+
+
+            <div class="score-comment">
+
+                <h3 id="scoreTitle">
+                    It's looking pretty empty...
+                </h3>
+
+                <p id="scoreDescription">
+                    Start dragging people. We have absolutely no reason to be doing this.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            Human Filler © 2026 — Solving problems nobody asked us to solve.
+        </p>
+
+    </footer>
+
+
+    <!-- Our JavaScript -->
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
