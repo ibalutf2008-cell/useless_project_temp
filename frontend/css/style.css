@@ -10,9 +10,9 @@
 
 body {
     font-family: 'Baloo 2', cursive;
-    background: linear-gradient(135deg, #7eb6eb, #d9daed, #9c84eb);
+    background: linear-gradient(135deg, #79bcfb, #faeeac, #d58ff8);
     min-height: 100vh;
-    color: #252525;
+    color: #90621e;
 }
 
 
@@ -27,9 +27,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    background: white;
-    border-bottom: 3px dashed #252525;
+    background: linear-gradient(135deg, #8ad1f7);
+    border-bottom: 3px dashed #ae5e34;
 
     position: relative;
     z-index: 10;
@@ -42,7 +41,7 @@ body {
 
 .tagline {
     font-size: 15px;
-    color: #666;
+    color: #ac631f;
 }
 
 
@@ -93,12 +92,12 @@ body {
 ========================================= */
 
 .object-selection {
-    background: white;
+    background: #c3ebf8;
     padding: 25px;
-    border: 3px solid #252525;
+    border: 3px solid #915e3f;
     border-radius: 20px;
 
-    box-shadow: 8px 8px 0 #252525;
+    box-shadow: 8px 8px 0 #c08664;
 
     margin-bottom: 40px;
 }
@@ -116,8 +115,8 @@ body {
 }
 
 .object-btn {
-    border: 2px solid #252525;
-    background: #fafafa;
+    border: 2px solid #8f6a51;
+    background: #e8f6fc;
 
     border-radius: 14px;
     padding: 14px 8px;
@@ -137,12 +136,12 @@ body {
 
 .object-btn:hover {
     transform: translateY(-4px);
-    box-shadow: 4px 4px 0 #252525;
+    box-shadow: 4px 4px 0 #c08664;
 }
 
 .object-btn.active {
-    background: #ffe066;
-    box-shadow: 4px 4px 0 #252525;
+    background: #fff0b4;
+    box-shadow: 4px 4px 0 #c08664;
 }
 
 .object-btn:first-letter {
@@ -168,14 +167,14 @@ body {
 ========================================= */
 
 .people-panel {
-    background: white;
+    background: #c3ebf8;
 
-    border: 3px solid #252525;
+    border: 3px solid #795d45;
     border-radius: 20px;
 
     padding: 25px;
 
-    box-shadow: 8px 8px 0 #252525;
+    box-shadow: 8px 8px 0 #c08664;
 }
 
 .panel-title {
@@ -191,7 +190,7 @@ body {
 }
 
 .drag-hint {
-    background: #ffb3c6;
+    background: #ffd4b3;
     padding: 5px 10px;
 
     border-radius: 20px;
@@ -214,7 +213,8 @@ body {
 
     padding: 15px;
 
-    background: #f4f4f4;
+    background: #e8f6fc;
+
 
     border: 2px dashed #999;
     border-radius: 15px;
@@ -295,10 +295,10 @@ body {
 
     padding: 12px;
 
-    border: 2px solid #252525;
+    border: 2px solid #a87b63;
     border-radius: 12px;
 
-    background: #b8f2e6;
+    background: #f2dab8;
 
     font-family: inherit;
     font-size: 16px;
@@ -311,7 +311,7 @@ body {
 
 .add-person-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 3px 3px 0 #252525;
+    box-shadow: 3px 3px 0 #d6bb6e;
 }
 
 .panel-info {
@@ -329,14 +329,14 @@ body {
 ========================================= */
 
 .object-panel {
-    background: white;
+    background: #c3ebf8;
 
-    border: 3px solid #252525;
+    border: 3px solid #946e5d;
     border-radius: 20px;
 
     padding: 25px;
 
-    box-shadow: 8px 8px 0 #252525;
+    box-shadow: 8px 8px 0 #c08664;
 }
 
 
@@ -369,14 +369,13 @@ body {
 ========================================= */
 
 .capacity {
-    background: white;
-
-    border: 3px solid #252525;
+    background: #e8f6fc;
+    border: 3px solid #6e5742;
     border-radius: 10px;
 
     padding: 20px;
 
-    box-shadow: 6px 6px 0 #252525;
+    box-shadow: 6px 6px 0 #c08664;
 }
 
 .capacity span {
@@ -400,7 +399,7 @@ body {
     width: 100%;
     height: 430px;
 
-    border: 4px dashed #252525;
+    border: 4px dashed #906e5a;
     border-radius: 20px;
 
     position: relative;
@@ -433,7 +432,7 @@ body {
 
     text-align: center;
 
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(94, 66, 47, 0.5);
 
     pointer-events: none;
 
@@ -476,7 +475,7 @@ body {
             #4fc4e8 20px
         );
 
-    border: 14px solid #eeeeee;
+    border: 14px solid #807771;
 
     border-radius: 35px;
 
@@ -967,7 +966,7 @@ body {
 
     padding: 13px;
 
-    border: 2px solid #252525;
+    border: 2px solid #6f5239;
     border-radius: 12px;
 
     font-family: inherit;
@@ -989,7 +988,7 @@ body {
 
 .controls button:hover {
     transform: translateY(-3px);
-    box-shadow: 4px 4px 0 #252525;
+    box-shadow: 4px 4px 0 #c08664;
 }
 
 
@@ -1009,7 +1008,7 @@ body {
 }
 
 .score-card {
-    background: #252525;
+    background: #6a5335;
     color: white;
 
     border-radius: 20px;
@@ -1037,17 +1036,17 @@ body {
 }
 
 .score-comment {
-    background: white;
+    background: #e8f6fc;
 
     height: 110px;
     width: 520px;
 
-    border: 3px solid #252525;
+    border: 3px solid #6f5239;
     border-radius: 10px;
 
     padding: 20px;
 
-    box-shadow: 6px 6px 0 #252525;
+    box-shadow: 6px 6px 0 #c08664;
 }
 
 .score-comment h3 {
@@ -1138,4 +1137,87 @@ body {
     .controls {
         flex-direction: column;
     }
+}
+/* =========================================
+   SOFT CONTINUOUS FLOATING EFFECT
+========================================= */
+
+/* Main floating animation */
+
+@keyframes softFloat {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+
+/* =========================================
+   MAIN CONTAINERS
+========================================= */
+
+.object-selection,
+.people-panel,
+.object-panel {
+    animation: softFloat 3.5s ease-in-out infinite;
+}
+
+
+/* Different timing for each container
+   so they don't move together */
+
+.object-selection {
+    animation-delay: 0s;
+}
+
+.people-panel {
+    animation-delay: 0.7s;
+}
+
+.object-panel {
+    animation-delay: 1.4s;
+}
+
+
+/* =========================================
+   SMALLER FLOATING BOXES
+========================================= */
+
+.capacity,
+.score-comment {
+    animation: softFloat 3s ease-in-out infinite;
+}
+
+
+/* Different timing */
+
+.capacity {
+    animation-delay: 0.4s;
+}
+
+.score-comment {
+    animation-delay: 1s;
+}
+
+
+/* =========================================
+   KEEP DRAG-AND-DROP PEOPLE NORMAL
+========================================= */
+
+.person {
+    animation: none;
+}
+
+
+/* Keep the drop zone stable while dragging */
+
+.drop-zone {
+    animation: none;
 }
