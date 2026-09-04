@@ -1,275 +1,251 @@
-/* ==========================================================
-   Fact + game data
-   Each entry defines its own tiny game via renderGame(area, win)
-   win() should be called exactly once, when the player succeeds.
+ /* ==========================================================
+   Fact + interaction data
+   Each entry defines its own tiny animated interaction via
+   renderGame(area, win). win() should be called exactly once,
+   when the player has uncovered the fact.
    ========================================================== */
+
+function shuffled(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function rectsOverlap(a, b) {
+  return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+}
+
+function shakeEl(el) {
+  el.animate(
+    [{ transform: "translateX(0)" }, { transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "translateX(0)" }],
+    { duration: 300 }
+  );
+}
 
 const FACTS = [
   {
-    id: "space",
-    title: "Space",
-    sub: "tap fast",
-    emoji: "🚀",
+    id: "pringles",
+    title: "Pringles",
+    sub: "guess where",
+    emoji: "🥫",
     color: "--coral",
     shape: "shape-fold",
-    instructions: "Tap the rocket 18 times before the timer runs out.",
-    fact: "A day on Venus is longer than its year: it takes about 243 Earth days to spin once, but only 225 to circle the Sun.",
+    instructions: "The inventor of Pringles was buried somewhere a little unusual. Click an object to guess where.",
+    fact: "The inventor of Pringles, Fredric Baur, loved his can design so much that some of his ashes were buried inside an actual Pringles can.",
     renderGame(area, win) {
-      const target = 18;
-      const seconds = 6;
-      let count = 0;
-      let timeLeft = seconds;
-      let ticking = null;
+      const options = shuffled([
+        { emoji: "⚱️", correct: false },
+        { emoji: "🥫", correct: true },
+        { emoji: "📦", correct: false },
+        { emoji: "🎁", correct: false },
+        { emoji: "🏺", correct: false },
+        { emoji: "🧳", correct: false },
+      ]);
 
-      area.innerHTML = `
-        <div class="tapper-count">0<span style="font-size:1.4rem;color:var(--ink-soft)"> / ${target}</span></div>
-        <p class="tapper-timer">${timeLeft.toFixed(1)}s left</p>
-        <button class="game-btn" id="tapBtn" type="button">Tap the rocket 🚀</button>
-      `;
-      const countEl = area.querySelector(".tapper-count");
-      const timerEl = area.querySelector(".tapper-timer");
-      const btn = area.querySelector("#tapBtn");
+      area.innerHTML = `<div class="guess-grid"></div>`;
+      const grid = area.querySelector(".guess-grid");
 
-      const start = performance.now();
-      ticking = setInterval(() => {
-        const elapsed = (performance.now() - start) / 1000;
-        timeLeft = Math.max(0, seconds - elapsed);
-        timerEl.textContent = `${timeLeft.toFixed(1)}s left`;
-        if (timeLeft <= 0) {
-          clearInterval(ticking);
-          if (count < target) {
-            btn.disabled = true;
-            btn.textContent = "Out of time — try again";
-            setTimeout(() => this.renderGame(area, win), 900);
-          }
-        }
-      }, 100);
-
-      btn.addEventListener("click", () => {
-        count++;
-        countEl.innerHTML = `${count}<span style="font-size:1.4rem;color:var(--ink-soft)"> / ${target}</span>`;
-        if (count >= target) {
-          clearInterval(ticking);
-          btn.disabled = true;
-          btn.textContent = "Liftoff! 🚀";
-          win();
-        }
-      });
-    }
-  },
-
-  {
-    id: "ocean",
-    title: "Ocean",
-    sub: "match pairs",
-    emoji: "🌊",
-    color: "--sky",
-    shape: "shape-blob",
-    instructions: "Flip the tiles two at a time and find all three matching pairs.",
-    fact: "We've mapped less than a quarter of the ocean floor in detail — there are better maps of the Moon and Mars than of Earth's own seabed.",
-    renderGame(area, win) {
-      const icons = ["🐚", "🐠", "🌊"];
-      let deck = [...icons, ...icons].map((icon, i) => ({ icon, i, flipped: false, matched: false }));
-      deck.sort(() => Math.random() - 0.5);
-
-      let openIndexes = [];
-      let lock = false;
-
-      area.innerHTML = `<div class="memory-grid"></div>`;
-      const grid = area.querySelector(".memory-grid");
-
-      function draw() {
-        grid.innerHTML = "";
-        deck.forEach((card, idx) => {
-          const tile = document.createElement("button");
-          tile.type = "button";
-          tile.className = "memory-tile" + (card.flipped || card.matched ? " flipped" : "") + (card.matched ? " matched" : "");
-          tile.textContent = card.flipped || card.matched ? card.icon : "";
-          tile.addEventListener("click", () => flip(idx));
-          grid.appendChild(tile);
-        });
-      }
-
-      function flip(idx) {
-        if (lock || deck[idx].flipped || deck[idx].matched) return;
-        deck[idx].flipped = true;
-        openIndexes.push(idx);
-        draw();
-
-        if (openIndexes.length === 2) {
-          lock = true;
-          const [a, b] = openIndexes;
-          if (deck[a].icon === deck[b].icon) {
-            deck[a].matched = true;
-            deck[b].matched = true;
-            openIndexes = [];
-            lock = false;
-            draw();
-            if (deck.every(c => c.matched)) {
-              setTimeout(win, 300);
-            }
-          } else {
-            setTimeout(() => {
-              deck[a].flipped = false;
-              deck[b].flipped = false;
-              openIndexes = [];
-              lock = false;
-              draw();
-            }, 650);
-          }
-        }
-      }
-
-      draw();
-    }
-  },
-
-  {
-    id: "animals",
-    title: "Animals",
-    sub: "quick reflexes",
-    emoji: "🦎",
-    color: "--mint",
-    shape: "shape-fold",
-    instructions: "Click the critter the moment it pops up. Get 5 hits.",
-    fact: "A shrimp's heart sits in its head, not its chest — most of its body is taken up by muscle for swimming.",
-    renderGame(area, win) {
-      const critters = ["🦎", "🐸", "🐹", "🦔"];
-      const holeCount = 9;
-      let hits = 0;
-      const target = 5;
-      let activeHole = null;
-      let spawnTimer = null;
-      let hideTimer = null;
-      let running = true;
-
-      area.innerHTML = `
-        <div class="mole-grid"></div>
-        <p style="font-weight:700;color:var(--ink-soft)">Hits: <span id="moleScore">0</span> / ${target}</p>
-      `;
-      const grid = area.querySelector(".mole-grid");
-      const scoreEl = area.querySelector("#moleScore");
-
-      const holes = [];
-      for (let i = 0; i < holeCount; i++) {
-        const hole = document.createElement("button");
-        hole.type = "button";
-        hole.className = "mole-hole";
-        hole.innerHTML = `<span class="critter"></span>`;
-        hole.addEventListener("click", () => {
-          if (hole.classList.contains("up")) {
-            hits++;
-            scoreEl.textContent = hits;
-            hole.classList.remove("up");
-            if (hits >= target) {
-              running = false;
-              clearTimeout(spawnTimer);
-              clearTimeout(hideTimer);
-              win();
-            }
-          }
-        });
-        grid.appendChild(hole);
-        holes.push(hole);
-      }
-
-      function spawn() {
-        if (!running) return;
-        if (activeHole) activeHole.classList.remove("up");
-        const hole = holes[Math.floor(Math.random() * holes.length)];
-        hole.querySelector(".critter").textContent = critters[Math.floor(Math.random() * critters.length)];
-        hole.classList.add("up");
-        activeHole = hole;
-        hideTimer = setTimeout(() => {
-          hole.classList.remove("up");
-          spawnTimer = setTimeout(spawn, 250);
-        }, 700);
-      }
-      spawnTimer = setTimeout(spawn, 500);
-    }
-  },
-
-  {
-    id: "history",
-    title: "History",
-    sub: "one quick question",
-    emoji: "🏺",
-    color: "--sun",
-    shape: "shape-blob",
-    instructions: "Answer correctly to open the trapdoor.",
-    fact: "The Great Fire of London in 1666 tore through most of the city but only a handful of deaths were officially recorded.",
-    renderGame(area, win) {
-      const options = ["Colossus of Rhodes", "Great Pyramid of Giza", "Hanging Gardens", "Lighthouse of Alexandria"];
-      const correct = "Great Pyramid of Giza";
-
-      area.innerHTML = `
-        <p class="quiz-question">Which ancient wonder still stands in Egypt today?</p>
-        <div class="quiz-options"></div>
-      `;
-      const optWrap = area.querySelector(".quiz-options");
       options.forEach(opt => {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "quiz-option";
-        btn.textContent = opt;
+        btn.className = "guess-option";
+        btn.textContent = opt.emoji;
         btn.addEventListener("click", () => {
-          const allBtns = optWrap.querySelectorAll(".quiz-option");
-          allBtns.forEach(b => b.disabled = true);
-          if (opt === correct) {
-            btn.classList.add("correct");
-            setTimeout(win, 500);
+          if (opt.correct) {
+            grid.querySelectorAll(".guess-option").forEach(b => b.disabled = true);
+            btn.classList.add("right");
+            setTimeout(win, 650);
           } else {
             btn.classList.add("wrong");
-            setTimeout(() => {
-              allBtns.forEach(b => { b.disabled = false; b.classList.remove("wrong"); });
-            }, 700);
+            setTimeout(() => btn.classList.remove("wrong"), 350);
           }
         });
-        optWrap.appendChild(btn);
+        grid.appendChild(btn);
       });
     }
   },
 
   {
-    id: "body",
-    title: "Human body",
-    sub: "test your reflexes",
-    emoji: "🫁",
-    color: "--lilac",
+    id: "shrimp",
+    title: "Shrimp",
+    sub: "find the heart",
+    emoji: "🦐",
+    color: "--peach",
+    shape: "shape-blob",
+    instructions: "A shrimp's heart isn't where you'd expect. Click around its body until you find it.",
+    fact: "A shrimp's heart is tucked away in its head, not its chest — most of its long body is really just tail muscle.",
+    renderGame(area, win) {
+      const zones = [
+        { left: "22%", top: "58%", correct: true },
+        { left: "40%", top: "72%", correct: false },
+        { left: "55%", top: "50%", correct: false },
+        { left: "68%", top: "32%", correct: false },
+        { left: "80%", top: "18%", correct: false },
+      ];
+
+      area.innerHTML = `
+        <div class="find-wrap">
+          <span class="find-subject">🦐</span>
+        </div>
+      `;
+      const wrap = area.querySelector(".find-wrap");
+
+      zones.forEach(zone => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "find-zone";
+        btn.style.left = zone.left;
+        btn.style.top = zone.top;
+        btn.addEventListener("click", () => {
+          if (btn.classList.contains("tried")) return;
+
+          const bubble = document.createElement("span");
+          bubble.className = "find-bubble";
+          bubble.style.left = zone.left;
+          bubble.style.top = zone.top;
+
+          if (zone.correct) {
+            bubble.textContent = "found it! ❤️";
+            wrap.appendChild(bubble);
+            wrap.querySelectorAll(".find-zone").forEach(z => z.disabled = true);
+            setTimeout(win, 700);
+          } else {
+            bubble.textContent = "nope";
+            btn.classList.add("tried");
+            wrap.appendChild(bubble);
+            setTimeout(() => bubble.remove(), 900);
+          }
+        });
+        wrap.appendChild(btn);
+      });
+    }
+  },
+
+  {
+    id: "cloud",
+    title: "Clouds",
+    sub: "weigh it",
+    emoji: "☁️",
+    color: "--sky",
     shape: "shape-fold",
-    instructions: "Wait for the box to turn green, then click it as fast as you can.",
-    fact: "Your nose can tell apart over a trillion different scents — far more than the handful of colors your eyes distinguish.",
+    instructions: "Drag the cloud onto the scale to see how much it really weighs.",
+    fact: "An average fluffy cumulus cloud weighs around a million tonnes — all that water is just spread out enough to float.",
     renderGame(area, win) {
       area.innerHTML = `
-        <div class="reflex-box" id="reflexBox">Click to start</div>
+        <div class="drag-wrap">
+          <div class="drag-item" id="dragCloud">☁️</div>
+          <div class="drop-zone" id="dropZone">
+            <span class="scale-icon">⚖️</span>
+            <span class="scale-reading" id="scaleReading">0 tonnes</span>
+          </div>
+        </div>
       `;
-      const box = area.querySelector("#reflexBox");
-      let state = "idle"; // idle -> waiting -> go
-      let goTime = 0;
-      let timeout = null;
+      const wrap = area.querySelector(".drag-wrap");
+      const cloud = area.querySelector("#dragCloud");
+      const zone = area.querySelector("#dropZone");
+      const reading = area.querySelector("#scaleReading");
 
-      box.addEventListener("click", () => {
-        if (state === "idle") {
-          state = "waiting";
-          box.textContent = "Wait for green…";
-          box.classList.remove("go", "early");
-          const delay = 800 + Math.random() * 1800;
-          timeout = setTimeout(() => {
-            state = "go";
-            goTime = performance.now();
-            box.classList.add("go");
-            box.textContent = "Click now!";
-          }, delay);
-        } else if (state === "waiting") {
-          clearTimeout(timeout);
-          state = "idle";
-          box.classList.add("early");
-          box.textContent = "Too soon — click to try again";
-          setTimeout(() => box.classList.remove("early"), 400);
-        } else if (state === "go") {
-          const reaction = Math.round(performance.now() - goTime);
-          box.textContent = `${reaction} ms — nice reflexes!`;
-          box.classList.remove("go");
+      cloud.style.left = "6px";
+      cloud.style.top = "6px";
+
+      let dragging = false;
+      let offsetX = 0;
+      let offsetY = 0;
+      let solved = false;
+
+      cloud.addEventListener("pointerdown", e => {
+        if (solved) return;
+        dragging = true;
+        cloud.classList.add("dragging");
+        cloud.setPointerCapture(e.pointerId);
+        const r = cloud.getBoundingClientRect();
+        offsetX = e.clientX - r.left;
+        offsetY = e.clientY - r.top;
+      });
+
+      cloud.addEventListener("pointermove", e => {
+        if (!dragging) return;
+        const wrapRect = wrap.getBoundingClientRect();
+        const x = e.clientX - wrapRect.left - offsetX;
+        const y = e.clientY - wrapRect.top - offsetY;
+        cloud.style.left = `${x}px`;
+        cloud.style.top = `${y}px`;
+
+        const overlap = rectsOverlap(cloud.getBoundingClientRect(), zone.getBoundingClientRect());
+        zone.classList.toggle("active", overlap);
+      });
+
+      cloud.addEventListener("pointerup", e => {
+        if (!dragging) return;
+        dragging = false;
+        cloud.classList.remove("dragging");
+
+        const overlap = rectsOverlap(cloud.getBoundingClientRect(), zone.getBoundingClientRect());
+        if (overlap) {
+          solved = true;
+          cloud.style.pointerEvents = "none";
+          const zoneRect = zone.getBoundingClientRect();
+          const wrapRect = wrap.getBoundingClientRect();
+          cloud.style.left = `${zoneRect.left - wrapRect.left + zoneRect.width / 2 - 30}px`;
+          cloud.style.top = `${zoneRect.top - wrapRect.top - 10}px`;
+
+          let shown = 0;
+          const target = 1000000;
+          const steps = 24;
+          let step = 0;
+          const timer = setInterval(() => {
+            step++;
+            shown = Math.round((target / steps) * step);
+            reading.textContent = `${shown.toLocaleString()} tonnes`;
+            if (step >= steps) {
+              clearInterval(timer);
+              reading.textContent = "≈ 1,000,000 tonnes";
+              setTimeout(win, 500);
+            }
+          }, 35);
+        } else {
+          zone.classList.remove("active");
+          cloud.style.left = "6px";
+          cloud.style.top = "6px";
+        }
+      });
+    }
+  },
+
+  {
+    id: "comet",
+    title: "Comets",
+    sub: "give it a sniff",
+    emoji: "☄️",
+    color: "--teal",
+    shape: "shape-blob",
+    instructions: "Click the comet to take a sniff. Three whiffs should tell you what it smells like.",
+    fact: "Comets often smell like rotten eggs, thanks to sulphur compounds mixed into their icy dust.",
+    renderGame(area, win) {
+      const needed = 3;
+      let count = 0;
+
+      area.innerHTML = `
+        <div class="sniff-wrap">
+          <button class="sniff-target" id="sniffTarget" type="button">☄️<span class="stink">💨</span></button>
+          <p class="sniff-count" id="sniffCount">Whiffs: 0 / ${needed}</p>
+        </div>
+      `;
+      const target = area.querySelector("#sniffTarget");
+      const countEl = area.querySelector("#sniffCount");
+
+      target.addEventListener("click", () => {
+        count++;
+        countEl.textContent = `Whiffs: ${Math.min(count, needed)} / ${needed}`;
+        target.classList.remove("puff");
+        void target.offsetWidth;
+        target.classList.add("puff");
+
+        if (count >= needed) {
+          target.disabled = true;
           setTimeout(win, 500);
         }
       });
@@ -277,132 +253,184 @@ const FACTS = [
   },
 
   {
-    id: "food",
-    title: "Food",
-    sub: "unscramble it",
-    emoji: "🍯",
-    color: "--peach",
-    shape: "shape-blob",
-    instructions: "Unscramble the letters to spell a food that never spoils.",
-    fact: "Honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that was still edible.",
+    id: "platypus",
+    title: "Platypus",
+    sub: "rub it down",
+    emoji: "🦫",
+    color: "--mint",
+    shape: "shape-fold",
+    instructions: "Platypuses don't sweat the usual way. Press and drag back and forth across it until it starts to sweat.",
+    fact: "Platypuses don't have regular sweat glands — the milk-making glands on their belly ooze milk that looks just like sweat, since mother platypuses have no nipples.",
     renderGame(area, win) {
-      const word = "HONEY";
-      let scrambled = word;
-      while (scrambled === word) {
-        scrambled = word.split("").sort(() => Math.random() - 0.5).join("");
-      }
+      const target = 100;
+      let progress = 0;
+      let rubbing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let solved = false;
 
       area.innerHTML = `
-        <p class="scramble-word">${scrambled}</p>
-        <input class="scramble-input" id="scrambleInput" type="text" maxlength="5" placeholder="your guess" autocomplete="off" />
-        <button class="game-btn small" id="scrambleBtn" type="button">Check</button>
+        <div class="rub-wrap">
+          <div class="rub-target" id="rubTarget">🦫<span class="drop">🥛</span></div>
+          <div class="rub-bar-track"><div class="rub-bar-fill" id="rubFill"></div></div>
+        </div>
       `;
-      const input = area.querySelector("#scrambleInput");
-      const btn = area.querySelector("#scrambleBtn");
+      const rubTarget = area.querySelector("#rubTarget");
+      const fill = area.querySelector("#rubFill");
 
-      function check() {
-        if (input.value.trim().toUpperCase() === word) {
-          win();
-        } else {
-          input.style.borderColor = "var(--coral)";
-          setTimeout(() => { input.style.borderColor = "var(--ink)"; }, 400);
+      rubTarget.addEventListener("pointerdown", e => {
+        if (solved) return;
+        rubbing = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        rubTarget.setPointerCapture(e.pointerId);
+      });
+
+      rubTarget.addEventListener("pointermove", e => {
+        if (!rubbing || solved) return;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        const dist = Math.hypot(dx, dy);
+        lastX = e.clientX;
+        lastY = e.clientY;
+        progress = Math.min(target, progress + dist * 0.5);
+        fill.style.width = `${progress}%`;
+
+        if (progress >= target) {
+          solved = true;
+          rubTarget.classList.add("sweating");
+          setTimeout(win, 700);
         }
-      }
-      btn.addEventListener("click", check);
-      input.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+      });
+
+      rubTarget.addEventListener("pointerup", () => { rubbing = false; });
+      rubTarget.addEventListener("pointerleave", () => { rubbing = false; });
     }
   },
 
   {
-    id: "internet",
-    title: "Internet",
-    sub: "tap in order",
-    emoji: "🕸️",
-    color: "--teal",
-    shape: "shape-fold",
-    instructions: "Tap the tiles from 1 to 9 in order, as quickly as you can.",
-    fact: "The first-ever website is still online. It went live in 1991 and simply explained what the World Wide Web was.",
+    id: "lightning",
+    title: "Lightning",
+    sub: "pick a number",
+    emoji: "⚡",
+    color: "--sun",
+    shape: "shape-blob",
+    instructions: "How many Suns stacked together would you need to match the heat of one lightning bolt?",
+    fact: "A single lightning bolt can reach around 30,000°C — roughly five times hotter than the surface of the Sun.",
     renderGame(area, win) {
-      const numbers = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
-      let next = 1;
+      const choices = [2, 5, 10, 20];
+      const correct = 5;
 
-      area.innerHTML = `<div class="seq-grid"></div>`;
-      const grid = area.querySelector(".seq-grid");
+      area.innerHTML = `
+        <p class="quiz-question">🌡️ Guess the number of Suns:</p>
+        <div class="quiz-options"></div>
+      `;
+      const wrap = area.querySelector(".quiz-options");
 
-      numbers.forEach(n => {
-        const tile = document.createElement("button");
-        tile.type = "button";
-        tile.className = "seq-tile";
-        tile.textContent = n;
-        tile.addEventListener("click", () => {
-          if (n === next) {
-            tile.classList.add("done");
-            tile.disabled = true;
-            next++;
-            if (next > 9) {
-              setTimeout(win, 300);
-            }
+      choices.forEach(n => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "quiz-option sun-option";
+        btn.innerHTML = `<span class="sun-icons">${"☀️".repeat(Math.min(n, 6))}${n > 6 ? "…" : ""}</span><span>${n} Suns</span>`;
+        btn.addEventListener("click", () => {
+          const all = wrap.querySelectorAll(".quiz-option");
+          if (n === correct) {
+            all.forEach(b => b.disabled = true);
+            btn.classList.add("correct");
+            setTimeout(win, 550);
           } else {
-            grid.animate(
-              [{ transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "translateX(0)" }],
-              { duration: 200 }
-            );
+            btn.classList.add("wrong");
+            setTimeout(() => btn.classList.remove("wrong"), 350);
           }
         });
-        grid.appendChild(tile);
+        wrap.appendChild(btn);
       });
     }
   },
 
   {
-    id: "nature",
-    title: "Nature",
-    sub: "beat the game",
-    emoji: "🌱",
+    id: "phobia",
+    title: "Long words",
+    sub: "spell the fear",
+    emoji: "😱",
+    color: "--lilac",
+    shape: "shape-fold",
+    instructions: "Tap the pieces in order, left to right, to spell out the fear of long words.",
+    fact: "The fear of long words has a wonderfully ironic name: Hippopotomonstrosesquippedaliophobia.",
+    renderGame(area, win) {
+      const chunks = ["HIPPO", "POTOMONSTRO", "SESQUIPPEDALIO", "PHOBIA"];
+      const order = shuffled(chunks.map((text, i) => ({ text, i })));
+      let next = 0;
+
+      area.innerHTML = `
+        <p class="word-build" id="wordBuild">&nbsp;</p>
+        <div class="chunk-grid" id="chunkGrid"></div>
+      `;
+      const wordBuild = area.querySelector("#wordBuild");
+      const grid = area.querySelector("#chunkGrid");
+
+      order.forEach(chunk => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chunk-tile";
+        btn.textContent = chunk.text;
+        btn.addEventListener("click", () => {
+          if (chunk.i === next) {
+            btn.classList.add("done");
+            wordBuild.textContent = chunks.slice(0, next + 1).join("");
+            next++;
+            if (next >= chunks.length) {
+              setTimeout(win, 700);
+            }
+          } else {
+            shakeEl(btn);
+          }
+        });
+        grid.appendChild(btn);
+      });
+    }
+  },
+
+  {
+    id: "headbang",
+    title: "Headaches",
+    sub: "bang it out",
+    emoji: "🤕",
     color: "--blush",
     shape: "shape-blob",
-    instructions: "Play rock, paper, scissors. Win one round to continue.",
-    fact: "Bananas are naturally a little radioactive because of their potassium — though you'd need to eat several million at once for it to matter.",
+    instructions: "Click your head against the wall and watch the calories add up.",
+    fact: "Banging your head against a wall burns about 150 calories an hour — not that we'd recommend testing that math yourself.",
     renderGame(area, win) {
-      const choices = { rock: "🪨", paper: "📄", scissors: "✂️" };
+      const target = 150;
+      const perClick = 15;
+      let count = 0;
+
       area.innerHTML = `
-        <div class="rps-row">
-          <button class="game-btn rps-btn" data-choice="rock">🪨</button>
-          <button class="game-btn rps-btn" data-choice="paper">📄</button>
-          <button class="game-btn rps-btn" data-choice="scissors">✂️</button>
+        <div class="bang-wrap">
+          <div class="bang-scene">
+            <button class="bang-head" id="bangHead" type="button">🤕</button>
+            <span class="bang-wall">🧱</span>
+          </div>
+          <p class="calorie-counter" id="calorieCounter">0 / ${target} calories</p>
+          <div class="calorie-track"><div class="calorie-fill" id="calorieFill"></div></div>
         </div>
-        <div class="rps-result" id="rpsResult"></div>
       `;
-      const resultEl = area.querySelector("#rpsResult");
+      const head = area.querySelector("#bangHead");
+      const counter = area.querySelector("#calorieCounter");
+      const fill = area.querySelector("#calorieFill");
 
-      function decide(user) {
-        const keys = Object.keys(choices);
-        const cpu = keys[Math.floor(Math.random() * keys.length)];
-        let outcome;
-        if (user === cpu) outcome = "draw";
-        else if (
-          (user === "rock" && cpu === "scissors") ||
-          (user === "paper" && cpu === "rock") ||
-          (user === "scissors" && cpu === "paper")
-        ) outcome = "win";
-        else outcome = "lose";
+      head.addEventListener("click", () => {
+        count = Math.min(target, count + perClick);
+        counter.textContent = `${count} / ${target} calories`;
+        fill.style.width = `${(count / target) * 100}%`;
+        head.classList.remove("hit");
+        void head.offsetWidth;
+        head.classList.add("hit");
 
-        resultEl.innerHTML = `<span>${choices[user]}</span><span class="rps-vs">vs</span><span>${choices[cpu]}</span>`;
-
-        if (outcome === "win") {
-          setTimeout(win, 700);
-        } else {
-          const msg = document.createElement("p");
-          msg.style.fontWeight = "700";
-          msg.style.color = "var(--ink-soft)";
-          msg.textContent = outcome === "draw" ? "A draw — go again." : "The game wins that round — try again.";
-          area.appendChild(msg);
-          setTimeout(() => msg.remove(), 1200);
+        if (count >= target) {
+          head.disabled = true;
+          setTimeout(win, 500);
         }
-      }
-
-      area.querySelectorAll(".rps-btn").forEach(btn => {
-        btn.addEventListener("click", () => decide(btn.dataset.choice));
       });
     }
   }
