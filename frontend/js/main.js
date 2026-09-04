@@ -23,7 +23,8 @@ const objectButtons = document.querySelectorAll(".object-btn");
 
 let count = 0;
 let draggedPerson = null;
-
+let dragOffsetX = 0;
+let dragOffsetY = 0;
 
 // ==========================================
 // INITIAL PEOPLE
@@ -39,12 +40,17 @@ initialPeople.forEach(person => {
 // ==========================================
 // MAKE A PERSON DRAGGABLE
 // ==========================================
-
 function makePersonDraggable(person) {
 
     person.addEventListener("dragstart", function(event) {
 
         draggedPerson = person;
+
+        // Find exactly where the cursor grabbed the person
+        const rect = person.getBoundingClientRect();
+
+        dragOffsetX = event.clientX - rect.left;
+        dragOffsetY = event.clientY - rect.top;
 
         event.dataTransfer.setData("text/plain", "person");
 
@@ -59,7 +65,6 @@ function makePersonDraggable(person) {
         draggedPerson = null;
     });
 }
-
 
 // ==========================================
 // DRAGGING OVER DROP ZONE
@@ -114,9 +119,9 @@ dropZone.addEventListener("drop", function(event) {
     // Position the person where they were dropped
 
     const rect = dropZone.getBoundingClientRect();
+    const x = event.clientX - rect.left - dragOffsetX;
+    const y = event.clientY - rect.top - dragOffsetY;
 
-    const x = event.clientX - rect.left - 35;
-    const y = event.clientY - rect.top - 35;
 
 
     draggedPerson.style.position = "absolute";
