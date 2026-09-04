@@ -10,7 +10,7 @@
 
 body {
     font-family: 'Baloo 2', cursive;
-    background: linear-gradient(135deg, #fff4d6, #e8f7ff, #f5e8ff);
+    background: linear-gradient(135deg, #7eb6eb, #d9daed, #9c84eb);
     min-height: 100vh;
     color: #252525;
 }
@@ -342,16 +342,16 @@ body {
 ========================================= */
 
 .capacity {
-    text-align: center;
 
-    background: #ffe066;
+ background: white;
 
-    border: 2px solid #252525;
-    border-radius: 14px;
+    border: 3px solid #252525;
+    border-radius: 10px;
 
-    padding: 8px 18px;
+    padding: 20px;
+
+    box-shadow: 6px 6px 0 #252525;
 }
-
 .capacity span {
     display: block;
 
@@ -963,18 +963,19 @@ body {
 
 .score-comment {
     background: white;
-
+    height: 110px;
+    width: 520px;
     border: 3px solid #252525;
-    border-radius: 20px;
+    border-radius: 10px;
 
-    padding: 25px;
+    padding: 20px;
 
     box-shadow: 6px 6px 0 #252525;
 }
 
 .score-comment h3 {
     font-size: 24px;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .score-comment p {
