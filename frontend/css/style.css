@@ -1,0 +1,650 @@
+/* =========================================
+   BASIC RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Baloo 2', cursive;
+    background: linear-gradient(135deg, #fff4d6, #e8f7ff, #f5e8ff);
+    min-height: 100vh;
+    color: #252525;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    width: 100%;
+    padding: 20px 50px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: white;
+    border-bottom: 3px dashed #252525;
+
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.tagline {
+    font-size: 15px;
+    color: #666;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.main-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 45px 0;
+}
+
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.small-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    font-size: 60px;
+    line-height: 0.95;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #666;
+}
+
+
+/* =========================================
+   OBJECT SELECTION
+========================================= */
+
+.object-selection {
+    background: white;
+    padding: 25px;
+    border: 3px solid #252525;
+    border-radius: 20px;
+
+    box-shadow: 8px 8px 0 #252525;
+
+    margin-bottom: 40px;
+}
+
+.object-selection h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.object-buttons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+}
+
+.object-btn {
+    border: 2px solid #252525;
+    background: #fafafa;
+
+    border-radius: 14px;
+    padding: 14px 8px;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition: all 0.2s ease;
+}
+
+.object-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 4px 4px 0 #252525;
+}
+
+.object-btn.active {
+    background: #ffe066;
+    box-shadow: 4px 4px 0 #252525;
+}
+
+.object-btn:first-letter {
+    font-size: 28px;
+}
+
+
+/* =========================================
+   GAME AREA
+========================================= */
+
+.game-area {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+
+    align-items: stretch;
+}
+
+
+/* =========================================
+   PEOPLE PANEL
+========================================= */
+
+.people-panel {
+    background: white;
+
+    border: 3px solid #252525;
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 8px 8px 0 #252525;
+}
+
+.panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.panel-title h2 {
+    font-size: 28px;
+}
+
+.drag-hint {
+    background: #ffb3c6;
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   PEOPLE CONTAINER
+========================================= */
+
+.people-container {
+    min-height: 250px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+
+    padding: 15px;
+
+    background: #f4f4f4;
+
+    border: 2px dashed #999;
+    border-radius: 15px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   PERSON
+========================================= */
+
+.person {
+    width: 75px;
+    height: 75px;
+
+    background: white;
+
+    border: 2px solid #252525;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 40px;
+
+    cursor: grab;
+
+    user-select: none;
+
+    transition: transform 0.15s ease;
+}
+
+.person:hover {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.person:active {
+    cursor: grabbing;
+    transform: scale(1.15);
+}
+
+
+/* =========================================
+   ADD PERSON BUTTON
+========================================= */
+
+.add-person-btn {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 2px solid #252525;
+    border-radius: 12px;
+
+    background: #b8f2e6;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.add-person-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 3px 3px 0 #252525;
+}
+
+.panel-info {
+    text-align: center;
+
+    margin-top: 15px;
+
+    font-size: 13px;
+    color: #777;
+}
+
+
+/* =========================================
+   OBJECT PANEL
+========================================= */
+
+.object-panel {
+    background: white;
+
+    border: 3px solid #252525;
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 8px 8px 0 #252525;
+}
+
+
+/* =========================================
+   OBJECT HEADER
+========================================= */
+
+.object-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.object-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #888;
+    font-weight: 700;
+}
+
+.object-header h2 {
+    font-size: 30px;
+}
+
+
+/* =========================================
+   PEOPLE COUNTER
+========================================= */
+
+.capacity {
+    text-align: center;
+
+    background: #ffe066;
+
+    border: 2px solid #252525;
+    border-radius: 14px;
+
+    padding: 8px 18px;
+}
+
+.capacity span {
+    display: block;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.capacity strong {
+    font-size: 30px;
+}
+
+
+/* =========================================
+   DROP ZONE
+========================================= */
+
+.drop-zone {
+    height: 430px;
+
+    border: 4px dashed #252525;
+    border-radius: 20px;
+
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.2s ease;
+}
+
+
+/* =========================================
+   POOL
+========================================= */
+
+.drop-zone.pool {
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #72d6f7 0px,
+            #72d6f7 12px,
+            #60c9ed 13px,
+            #60c9ed 20px
+        );
+}
+
+
+/* =========================================
+   DROP MESSAGE
+========================================= */
+
+.drop-message {
+    text-align: center;
+
+    color: rgba(0, 0, 0, 0.5);
+
+    pointer-events: none;
+
+    transition: opacity 0.2s ease;
+}
+
+.drop-icon {
+    font-size: 45px;
+    margin-bottom: 5px;
+}
+
+.drop-message p {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+/* =========================================
+   WHEN DRAGGING OVER DROP ZONE
+========================================= */
+
+.drop-zone.drag-over {
+    transform: scale(1.01);
+
+    border-style: solid;
+
+    box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.drop-zone.drag-over .drop-message {
+    opacity: 0.2;
+}
+
+
+/* =========================================
+   STATUS MESSAGE
+========================================= */
+
+.status-message {
+    margin-top: 15px;
+
+    padding: 12px 15px;
+
+    background: #f4f4f4;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 14px;
+    color: #555;
+}
+
+
+/* =========================================
+   CONTROLS
+========================================= */
+
+.controls {
+    display: flex;
+    gap: 15px;
+
+    margin-top: 15px;
+}
+
+.controls button {
+    flex: 1;
+
+    padding: 13px;
+
+    border: 2px solid #252525;
+    border-radius: 12px;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.reset-btn {
+    background: #f4f4f4;
+}
+
+.submit-btn {
+    background: #c8b6ff;
+}
+
+.controls button:hover {
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0 #252525;
+}
+
+
+/* =========================================
+   SCORE SECTION
+========================================= */
+
+.score-section {
+    margin-top: 40px;
+
+    display: grid;
+    grid-template-columns: 250px 1fr;
+
+    gap: 25px;
+
+    align-items: center;
+}
+
+.score-card {
+    background: #252525;
+    color: white;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    text-align: center;
+}
+
+.score-card p {
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.big-number {
+    font-size: 70px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 10px 0;
+}
+
+.score-card span {
+    color: #ccc;
+}
+
+.score-comment {
+    background: white;
+
+    border: 3px solid #252525;
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 6px 6px 0 #252525;
+}
+
+.score-comment h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.score-comment p {
+    color: #666;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+    text-align: center;
+
+    padding: 30px;
+
+    margin-top: 20px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 900px) {
+
+    .object-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .game-area {
+        grid-template-columns: 1fr;
+    }
+
+    .people-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .score-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 15px 20px;
+
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .tagline {
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .main-container {
+        width: 94%;
+    }
+
+    .object-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .people-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .drop-zone {
+        height: 350px;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+}
