@@ -234,7 +234,7 @@ body {
     background: transparent;
 
     border: none;
-    border: radius 0;;
+    border-radius: 0;
 
     display: flex;
     justify-content: center;
@@ -256,6 +256,33 @@ body {
 .person:active {
     cursor: grabbing;
     transform: scale(1.15);
+}
+
+
+/* =========================================
+   IMPORTANT:
+   PEOPLE INSIDE DROP ZONE
+========================================= */
+
+.drop-zone > .person {
+    position: absolute !important;
+
+    display: flex !important;
+
+    width: 75px !important;
+    height: 75px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: none !important;
+
+    z-index: 20;
+
+    background: transparent !important;
+    border: none !important;
+
+    cursor: grab;
 }
 
 
@@ -342,8 +369,7 @@ body {
 ========================================= */
 
 .capacity {
-
- background: white;
+    background: white;
 
     border: 3px solid #252525;
     border-radius: 10px;
@@ -352,6 +378,7 @@ body {
 
     box-shadow: 6px 6px 0 #252525;
 }
+
 .capacity span {
     display: block;
 
@@ -363,6 +390,7 @@ body {
 .capacity strong {
     font-size: 30px;
 }
+
 
 /* =========================================
    DROP ZONE - BASE
@@ -376,20 +404,59 @@ body {
     border-radius: 20px;
 
     position: relative;
+
     overflow: hidden;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /*
+       IMPORTANT:
+       Do NOT use flexbox here.
+       The people need to be positioned
+       freely using left/top.
+    */
+    display: block;
 
     transition: all 0.3s ease;
 }
 
 
 /* =========================================
-   SWIMMING POOL
+   DROP MESSAGE
 ========================================= */
 
+.drop-message {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+
+    color: rgba(0, 0, 0, 0.5);
+
+    pointer-events: none;
+
+    transition: opacity 0.2s ease;
+
+    z-index: 5;
+}
+
+.drop-icon {
+    font-size: 45px;
+    margin-bottom: 5px;
+}
+
+.drop-message p {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+/* =========================================
+   SWIMMING POOL
+========================================= */
 
 .drop-zone.pool {
     width: 100%;
@@ -400,7 +467,6 @@ body {
     position: relative;
     overflow: hidden;
 
-    /* Pool water */
     background:
         repeating-linear-gradient(
             0deg,
@@ -410,16 +476,15 @@ body {
             #4fc4e8 20px
         );
 
-    /* Pool edge */
     border: 14px solid #eeeeee;
 
     border-radius: 35px;
 
-    /* Depth + raised pool edge */
     box-shadow:
         inset 0 0 30px rgba(0, 0, 0, 0.25),
         0 12px 25px rgba(0, 0, 0, 0.25);
 }
+
 
 /* =========================================
    ELEVATOR
@@ -434,7 +499,6 @@ body {
     position: relative;
     overflow: hidden;
 
-    /* Interior of elevator */
     background:
         linear-gradient(
             90deg,
@@ -472,7 +536,6 @@ body {
 
     margin: auto;
 
-    /* White ceramic tub */
     background: linear-gradient(
         180deg,
         #ffffff 0%,
@@ -480,17 +543,16 @@ body {
         #dcdcdc 100%
     );
 
-    /* Bathtub shape */
     border: 8px solid #c8c8c8;
     border-radius: 90px 90px 35px 35px;
 
-    /* Make it look raised */
     box-shadow:
         inset 0 -25px 30px rgba(0, 0, 0, 0.12),
         0 10px 20px rgba(0, 0, 0, 0.2);
 
     position: relative;
 }
+
 
 /* =========================================
    BED
@@ -505,7 +567,6 @@ body {
     position: relative;
     overflow: hidden;
 
-    /* Mattress */
     background: linear-gradient(
         180deg,
         #fff8ff 0%,
@@ -549,6 +610,8 @@ body {
 
     z-index: 1;
 }
+
+
 /* =========================================
    TWO PILLOWS
 ========================================= */
@@ -580,6 +643,7 @@ body {
     z-index: 1;
 }
 
+
 /* =========================================
    CAR
 ========================================= */
@@ -593,7 +657,6 @@ body {
     position: relative;
     overflow: hidden;
 
-    /* Car body */
     background: linear-gradient(
         180deg,
         #e53935 0%,
@@ -626,7 +689,6 @@ body {
     width: 310px;
     height: 85px;
 
-    /* Two windows */
     background:
         linear-gradient(
             90deg,
@@ -668,7 +730,6 @@ body {
 
     background:
 
-        /* LEFT WHEEL */
         radial-gradient(
             circle at 37px 37px,
             #bdbdbd 0px,
@@ -680,7 +741,6 @@ body {
             transparent 38px
         ),
 
-        /* RIGHT WHEEL */
         radial-gradient(
             circle at 402px 37px,
             #bdbdbd 0px,
@@ -694,6 +754,8 @@ body {
 
     z-index: 3;
 }
+
+
 /* =========================================
    AIRPLANE
 ========================================= */
@@ -706,9 +768,8 @@ body {
     margin: auto;
 
     position: relative;
-    overflow:hidden;
+    overflow: hidden;
 
-    /* Airplane body */
     background: linear-gradient(
         180deg,
         #ffffff 0%,
@@ -718,7 +779,6 @@ body {
 
     border: 6px solid #707070;
 
-    /* Rounded airplane fuselage */
     border-radius: 150px 150px 45px 45px;
 
     box-shadow:
@@ -726,9 +786,16 @@ body {
         0 12px 25px rgba(0, 0, 0, 0.25);
 }
 
+
+/* =========================================
+   AIRPLANE WINDOWS
+========================================= */
+
 .airplane-window {
     position: absolute;
+
     top: 25px;
+
     width: 55px;
     height: 40px;
 
@@ -740,6 +807,7 @@ body {
     );
 
     border: 4px solid #555;
+
     border-radius: 50%;
 
     box-shadow:
@@ -748,14 +816,39 @@ body {
     z-index: 3;
 }
 
-.window-1 { left: 45px; }
-.window-2 { left: 115px; }
-.window-3 { left: 185px; }
-.window-4 { left: 255px; }
-.window-5 { left: 325px; }
-.window-6 { left: 395px; }
-.window-7 { left: 465px; }
-.window-8 { left: 535px; }
+.window-1 {
+    left: 45px;
+}
+
+.window-2 {
+    left: 115px;
+}
+
+.window-3 {
+    left: 185px;
+}
+
+.window-4 {
+    left: 255px;
+}
+
+.window-5 {
+    left: 325px;
+}
+
+.window-6 {
+    left: 395px;
+}
+
+.window-7 {
+    left: 465px;
+}
+
+.window-8 {
+    left: 535px;
+}
+
+
 /* =========================================
    AIRPLANE AISLE
 ========================================= */
@@ -789,15 +882,20 @@ body {
 }
 
 
-/* =========================================
-   DROP MESSAGE
-========================================= */
+/* Airplane drop message */
 
 .drop-zone.airplane .drop-message {
-    position: relative;
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
 
     z-index: 6;
 }
+
+
 /* =========================================
    POOL
 ========================================= */
@@ -815,32 +913,6 @@ body {
 
 
 /* =========================================
-   DROP MESSAGE
-========================================= */
-
-.drop-message {
-    text-align: center;
-
-    color: rgba(0, 0, 0, 0.5);
-
-    pointer-events: none;
-
-    transition: opacity 0.2s ease;
-}
-
-.drop-icon {
-    font-size: 45px;
-    margin-bottom: 5px;
-}
-
-.drop-message p {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
-
-
-/* =========================================
    WHEN DRAGGING OVER DROP ZONE
 ========================================= */
 
@@ -849,7 +921,8 @@ body {
 
     border-style: solid;
 
-    box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.5);
+    box-shadow:
+        inset 0 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 .drop-zone.drag-over .drop-message {
@@ -873,6 +946,7 @@ body {
     text-align: center;
 
     font-size: 14px;
+
     color: #555;
 }
 
@@ -954,6 +1028,7 @@ body {
     font-size: 70px;
     font-weight: 800;
     line-height: 1;
+
     margin: 10px 0;
 }
 
@@ -963,8 +1038,10 @@ body {
 
 .score-comment {
     background: white;
+
     height: 110px;
     width: 520px;
+
     border: 3px solid #252525;
     border-radius: 10px;
 
@@ -1030,6 +1107,7 @@ body {
         padding: 15px 20px;
 
         flex-direction: column;
+
         gap: 5px;
     }
 

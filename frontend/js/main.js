@@ -1,175 +1,382 @@
-// ==========================================
-// GET HTML ELEMENTS
-// ==========================================
+// =========================================
+// ELEMENTS
+// =========================================
 
 const dropZone = document.getElementById("dropZone");
 const peopleContainer = document.querySelector(".people-container");
 
-const peopleCount = document.getElementById("peopleCount");
-const score = document.getElementById("score");
-
 const addPersonBtn = document.getElementById("addPersonBtn");
 const resetBtn = document.getElementById("resetBtn");
+
+const peopleCount = document.getElementById("peopleCount");
 
 const objectName = document.getElementById("objectName");
 
 const scoreTitle = document.getElementById("scoreTitle");
 const scoreDescription = document.getElementById("scoreDescription");
 
-const objectButtons = document.querySelectorAll(".object-btn");
+const statusMessage = document.getElementById("statusMessage");
 
 
-// ==========================================
+// =========================================
 // VARIABLES
-// ==========================================
+// =========================================
 
-let count = 0;
 let draggedPerson = null;
 
-let dragOffsetX = 0;
-let dragOffsetY = 0;
+let offsetX = 0;
+let offsetY = 0;
 
 
-// ==========================================
-// INITIAL PEOPLE
-// ==========================================
+// =========================================
+// CREATE PERSON
+// =========================================
 
-const initialPeople = document.querySelectorAll(".person");
+function createPerson() {
 
-initialPeople.forEach(person => {
-    makePersonDraggable(person);
-});
+    const person = document.createElement("div");
+
+    person.classList.add(
+        "person",
+        "draggable"
+    );
+
+    person.draggable = true;
+
+    person.textContent = "🧍";
+
+    peopleContainer.appendChild(person);
+
+    makeDraggable(person);
+}
 
 
-// ==========================================
-// MAKE A PERSON DRAGGABLE
-// ==========================================
+// =========================================
+// CREATE INITIAL 4 PEOPLE
+// =========================================
 
-function makePersonDraggable(person) {
+for (let i = 0; i < 4; i++) {
 
-    // Remember exactly where the mouse grabs the person
-    person.addEventListener("mousedown", function(event) {
+    createPerson();
 
-        const rect = person.getBoundingClientRect();
+}
 
-        dragOffsetX = event.clientX - rect.left;
-        dragOffsetY = event.clientY - rect.top;
-    });
 
+// =========================================
+// MAKE PERSON DRAGGABLE
+// =========================================
+
+function makeDraggable(person) {
 
     person.addEventListener("dragstart", function(event) {
 
         draggedPerson = person;
 
-        event.dataTransfer.setData("text/plain", "person");
 
-        person.style.opacity = "0.5";
+        // Find where inside the person
+        // the mouse grabbed
+        const rect =
+            person.getBoundingClientRect();
+
+
+        offsetX =
+            event.clientX - rect.left;
+
+        offsetY =
+            event.clientY - rect.top;
+
+
+        // Required for drag and drop
+        event.dataTransfer.setData(
+            "text/plain",
+            "person"
+        );
+
+
+        // Keep the normal browser
+        // drag preview visible
+        person.classList.add(
+            "being-dragged"
+        );
+
     });
 
 
     person.addEventListener("dragend", function() {
 
-        person.style.opacity = "1";
+        person.classList.remove(
+            "being-dragged"
+        );
+
+        dropZone.classList.remove(
+            "drag-over"
+        );
 
         draggedPerson = null;
+
     });
 }
 
 
-// ==========================================
-// DRAGGING OVER DROP ZONE
-// ==========================================
+// =========================================
+// DRAG OVER
+// =========================================
 
 dropZone.addEventListener("dragover", function(event) {
 
     event.preventDefault();
 
-    dropZone.classList.add("drag-over");
+    dropZone.classList.add(
+        "drag-over"
+    );
+
 });
 
 
-// ==========================================
-// LEAVE DROP ZONE
-// ==========================================
+// =========================================
+// DRAG ENTER
+// =========================================
 
-dropZone.addEventListener("dragleave", function() {
+dropZone.addEventListener("dragenter", function(event) {
 
-    dropZone.classList.remove("drag-over");
+    event.preventDefault();
+
+    dropZone.classList.add(
+        "drag-over"
+    );
+
 });
 
 
-// ==========================================
-// DROP PERSON INTO OBJECT
-// ==========================================
+// =========================================
+// DRAG LEAVE
+// =========================================
+
+dropZone.addEventListener("dragleave", function(event) {
+
+    if (
+        !dropZone.contains(
+            event.relatedTarget
+        )
+    ) {
+
+        dropZone.classList.remove(
+            "drag-over"
+        );
+
+    }
+
+});
+
+
+// =========================================
+// DROP
+// =========================================
 
 dropZone.addEventListener("drop", function(event) {
 
     event.preventDefault();
 
-    dropZone.classList.remove("drag-over");
-
-    if (draggedPerson === null) {
+    if (!draggedPerson) {
         return;
     }
 
 
-    // ==========================================
-    // IF PERSON IS NOT ALREADY INSIDE
-    // ==========================================
+    // =====================================
+    // REMOVE DRAG OVER EFFECT
+    // =====================================
 
-    if (!dropZone.contains(draggedPerson)) {
+    dropZone.classList.remove(
+        "drag-over"
+    );
 
-        dropZone.appendChild(draggedPerson);
 
-        count++;
+    // =====================================
+    // GET DROP ZONE POSITION
+    // =====================================
 
-        updateCounter();
+    const rect =
+        dropZone.getBoundingClientRect();
 
-        showMessage();
 
-        // Automatically create a replacement person
-        createPerson();
+    // =====================================
+    // CALCULATE DROP POSITION
+    // =====================================
+
+    let x =
+        event.clientX -
+        rect.left -
+        offsetX;
+
+    let y =
+        event.clientY -
+        rect.top -
+        offsetY;
+
+
+    // =====================================
+    // ACCOUNT FOR SCALE
+    // =====================================
+
+    const scaleX =
+        dropZone.clientWidth /
+        rect.width;
+
+    const scaleY =
+        dropZone.clientHeight /
+        rect.height;
+
+
+    x *= scaleX;
+
+    y *= scaleY;
+
+
+    // =====================================
+    // PERSON SIZE
+    // =====================================
+
+    const width =
+        draggedPerson.offsetWidth;
+
+    const height =
+        draggedPerson.offsetHeight;
+
+
+    // =====================================
+    // KEEP PERSON INSIDE OBJECT
+    // =====================================
+
+    if (x < 0) {
+
+        x = 0;
+
     }
 
 
-    // ==========================================
-    // POSITION PERSON EXACTLY WHERE CURSOR IS
-    // ==========================================
+    if (y < 0) {
 
-    const rect = dropZone.getBoundingClientRect();
+        y = 0;
 
-    const x = event.clientX - rect.left - dragOffsetX;
-    const y = event.clientY - rect.top - dragOffsetY;
+    }
 
 
-    draggedPerson.style.position = "absolute";
+    if (
+        x + width >
+        dropZone.clientWidth
+    ) {
 
-    draggedPerson.style.left = `${x}px`;
+        x =
+            dropZone.clientWidth -
+            width;
 
-    draggedPerson.style.top = `${y}px`;
+    }
 
-    draggedPerson.style.margin = "0";
+
+    if (
+        y + height >
+        dropZone.clientHeight
+    ) {
+
+        y =
+            dropZone.clientHeight -
+            height;
+
+    }
+
+
+    // =====================================
+    // MOVE PERSON INTO OBJECT
+    // =====================================
+
+    dropZone.appendChild(
+        draggedPerson
+    );
+
+
+    // =====================================
+    // POSITION PERSON
+    // =====================================
+
+    draggedPerson.style.position =
+        "absolute";
+
+    draggedPerson.style.left =
+        `${x}px`;
+
+    draggedPerson.style.top =
+        `${y}px`;
+
+    draggedPerson.style.margin =
+        "0";
+
+    draggedPerson.style.zIndex =
+        "20";
+
+
+    // =====================================
+    // CLEAR DRAGGED PERSON
+    // =====================================
+
+    draggedPerson = null;
+
+
+    // =====================================
+    // AUTOMATICALLY REPLENISH
+    // =====================================
+
+    createPerson();
+
+
+    // =====================================
+    // UPDATE COUNTER
+    // =====================================
+
+    updateCount();
+
+
+    // =====================================
+    // UPDATE MESSAGES
+    // =====================================
+
+    updateMessage();
 
 });
 
 
-// ==========================================
-// UPDATE COUNTER
-// ==========================================
+// =========================================
+// UPDATE PEOPLE COUNT
+// =========================================
 
-function updateCounter() {
+function updateCount() {
 
-    peopleCount.textContent = count;
+    const count =
+        dropZone.querySelectorAll(
+            ".person"
+        ).length;
 
-    score.textContent = count;
+
+    peopleCount.textContent =
+        count;
+
 }
 
 
-// ==========================================
-// FUNNY MESSAGES
-// ==========================================
+// =========================================
+// UPDATE MESSAGES
+// =========================================
 
-function showMessage() {
+function updateMessage() {
+
+    const count =
+        dropZone.querySelectorAll(
+            ".person"
+        ).length;
+
+
+    // =====================================
+    // TOP COMMENT BOX
+    // =====================================
 
     if (count === 0) {
 
@@ -178,262 +385,343 @@ function showMessage() {
 
         scoreDescription.textContent =
             "Start dragging people. We have absolutely no reason to be doing this.";
-    }
 
+    }
 
     else if (count === 1) {
 
         scoreTitle.textContent =
-            "One person.";
+            "Well... that's one.";
 
         scoreDescription.textContent =
-            "Very reasonable. This won't last.";
+            "Surely we can fit more people in there.";
+
     }
-
-
-    else if (count === 2) {
-
-        scoreTitle.textContent =
-            "Two people.";
-
-        scoreDescription.textContent =
-            "Things are getting suspicious.";
-    }
-
 
     else if (count < 5) {
 
         scoreTitle.textContent =
-            "Okay...";
+            "Now we're getting somewhere.";
 
         scoreDescription.textContent =
-            "This is starting to become unnecessary.";
-    }
+            `${count} people are currently inside. This experiment is becoming slightly concerning.`;
 
+    }
 
     else if (count < 10) {
 
         scoreTitle.textContent =
-            "This is getting crowded.";
+            "Okay, that's quite a few.";
 
         scoreDescription.textContent =
-            "There are definitely better things you could be doing.";
+            `${count} people. Someone should probably stop this.`;
+
     }
-
-
-    else if (count < 20) {
-
-        scoreTitle.textContent =
-            "At this point...";
-
-        scoreDescription.textContent =
-            "You're just collecting humans.";
-    }
-
 
     else {
 
         scoreTitle.textContent =
-            "BRO. THERE ARE TOO MANY PEOPLE.";
+            "WHY ARE THERE SO MANY PEOPLE?!";
 
         scoreDescription.textContent =
-            "Please stop. There is absolutely no reason for this.";
+            `${count} people are inside. We have officially lost the plot.`;
+
     }
+
+
+    // =====================================
+    // BOTTOM STATUS MESSAGE
+    // =====================================
+
+    if (count === 0) {
+
+        statusMessage.textContent =
+            "Nobody has entered yet. They're probably smarter than us.";
+
+    }
+
+    else if (count === 1) {
+
+        statusMessage.textContent =
+            "One person. This is already getting ridiculous.";
+
+    }
+
+    else if (count < 5) {
+
+        statusMessage.textContent =
+            `${count} people. We are making progress for absolutely no reason.`;
+
+    }
+
+    else {
+
+        statusMessage.textContent =
+            `${count} people. Please stop.`;
+
+    }
+
 }
 
 
-// ==========================================
-// CREATE A NEW PERSON
-// ==========================================
+// =========================================
+// ADD PERSON BUTTON
+// =========================================
 
-function createPerson() {
+addPersonBtn.addEventListener(
+    "click",
+    function() {
 
-    const person = document.createElement("div");
+        createPerson();
 
-    person.classList.add("person", "draggable");
-
-    person.setAttribute("draggable", "true");
-
-    person.textContent = "🧍";
-
-
-    // Add the new person to the people panel
-    peopleContainer.appendChild(person);
+    }
+);
 
 
-    // Make the new person draggable
-    makePersonDraggable(person);
-}
+// =========================================
+// RESET
+// =========================================
+
+resetBtn.addEventListener(
+    "click",
+    function() {
+
+        // Get everyone currently
+        // inside the object
+        const people =
+            dropZone.querySelectorAll(
+                ".person"
+            );
 
 
-// ==========================================
-// ADD A NEW PERSON BUTTON
-// ==========================================
+        people.forEach(
+            function(person) {
 
-addPersonBtn.addEventListener("click", function() {
+                person.style.position =
+                    "";
 
-    createPerson();
+                person.style.left =
+                    "";
 
-});
+                person.style.top =
+                    "";
 
+                person.style.margin =
+                    "";
 
-// ==========================================
-// RESET BUTTON
-// ==========================================
-
-resetBtn.addEventListener("click", function() {
-
-    // Find all people currently inside the object
-    const peopleInside = dropZone.querySelectorAll(".person");
+                person.style.zIndex =
+                    "";
 
 
-    peopleInside.forEach(person => {
+                peopleContainer.appendChild(
+                    person
+                );
 
-        // Move them back to the people panel
-        person.style.position = "static";
-
-        person.style.left = "";
-        person.style.top = "";
-
-        person.style.margin = "";
-
-        peopleContainer.appendChild(person);
-
-    });
+            }
+        );
 
 
-    // Reset count
-    count = 0;
+        // =====================================
+        // MAKE SURE THERE ARE 4 AVAILABLE
+        // =====================================
 
-    updateCounter();
+        let availablePeople =
+            peopleContainer.querySelectorAll(
+                ".person"
+            ).length;
 
-    showMessage();
 
-});
+        while (availablePeople < 4) {
+
+            createPerson();
+
+            availablePeople++;
+
+        }
 
 
-// ==========================================
+        updateCount();
+
+        updateMessage();
+
+    }
+);
+
+
+// =========================================
 // OBJECT SELECTION
-// ==========================================
+// =========================================
 
-objectButtons.forEach(button => {
-
-    button.addEventListener("click", function() {
-
-        // Remove active class from all buttons
-        objectButtons.forEach(btn => {
-            btn.classList.remove("active");
-        });
+const objectButtons =
+    document.querySelectorAll(
+        ".object-btn"
+    );
 
 
-        // Make clicked button active
-        button.classList.add("active");
+const objectData = {
 
+    pool: {
+        name: "Swimming Pool"
+    },
 
-        // Get selected object
-        const selectedObject = button.dataset.object;
+    elevator: {
+        name: "Elevator"
+    },
 
+    bathtub: {
+        name: "Bathtub"
+    },
 
-        changeObject(selectedObject);
+    bed: {
+        name: "Bed"
+    },
 
-    });
+    car: {
+        name: "Car"
+    },
 
-});
-
-
-// ==========================================
-// CHANGE OBJECT
-// ==========================================
-
-function changeObject(object) {
-
-    if (object === "pool") {
-
-        objectName.textContent = "Swimming Pool";
-
-        dropZone.className = "drop-zone pool";
-
-        scoreTitle.textContent =
-            "Welcome to the pool.";
-
-        scoreDescription.textContent =
-            "Please leave your dignity at the door.";
-
+    airplane: {
+        name: "Airplane"
     }
 
+};
 
-    else if (object === "elevator") {
 
-        objectName.textContent = "Elevator";
+// =========================================
+// OBJECT BUTTONS
+// =========================================
 
-        dropZone.className = "drop-zone elevator";
+objectButtons.forEach(
+    function(button) {
 
-        scoreTitle.textContent =
-            "Welcome to the elevator.";
+        button.addEventListener(
+            "click",
+            function() {
 
-        scoreDescription.textContent =
-            "How many people before someone starts breathing manually?";
+
+                // =================================
+                // ACTIVE BUTTON
+                // =================================
+
+                objectButtons.forEach(
+                    function(btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                // =================================
+                // GET OBJECT
+                // =================================
+
+                const object =
+                    button.dataset.object;
+
+
+                // =================================
+                // CHANGE OBJECT NAME
+                // =================================
+
+                objectName.textContent =
+                    objectData[object].name;
+
+
+                // =================================
+                // CHANGE OBJECT CLASS
+                // =================================
+
+                dropZone.className =
+                    `drop-zone ${object}`;
+
+
+                // =================================
+                // RETURN PEOPLE TO PANEL
+                // =================================
+
+                const people =
+                    dropZone.querySelectorAll(
+                        ".person"
+                    );
+
+
+                people.forEach(
+                    function(person) {
+
+                        person.style.position =
+                            "";
+
+                        person.style.left =
+                            "";
+
+                        person.style.top =
+                            "";
+
+                        person.style.margin =
+                            "";
+
+                        person.style.zIndex =
+                            "";
+
+
+                        peopleContainer.appendChild(
+                            person
+                        );
+
+                    }
+                );
+
+
+                // =================================
+                // MAKE SURE 4 ARE AVAILABLE
+                // =================================
+
+                let availablePeople =
+                    peopleContainer.querySelectorAll(
+                        ".person"
+                    ).length;
+
+
+                while (availablePeople < 4) {
+
+                    createPerson();
+
+                    availablePeople++;
+
+                }
+
+
+                // =================================
+                // UPDATE
+                // =================================
+
+                updateCount();
+
+                updateMessage();
+
+
+                statusMessage.textContent =
+                    "New object selected. Time to make questionable decisions.";
+
+            }
+        );
 
     }
+);
 
 
-    else if (object === "bathtub") {
+// =========================================
+// INITIAL UPDATE
+// =========================================
 
-        objectName.textContent = "Bathtub";
+updateCount();
 
-        dropZone.className = "drop-zone bathtub";
-
-        scoreTitle.textContent =
-            "A bathtub.";
-
-        scoreDescription.textContent =
-            "A completely normal place to put several people.";
-
-    }
-
-
-    else if (object === "bed") {
-
-        objectName.textContent = "Bed";
-
-        dropZone.className = "drop-zone bed";
-
-        scoreTitle.textContent =
-            "Sleepover time.";
-
-        scoreDescription.textContent =
-            "Sleepover has gotten slightly out of hand.";
-
-    }
-
-
-    else if (object === "car") {
-
-        objectName.textContent = "Car";
-
-        dropZone.className = "drop-zone car";
-
-        scoreTitle.textContent =
-            "Everyone's coming.";
-
-        scoreDescription.textContent =
-            "Road trip? More like human Tetris.";
-
-    }
-
-
-    else if (object === "airplane") {
-
-        objectName.textContent = "Airplane";
-
-        dropZone.className = "drop-zone airplane";
-
-        scoreTitle.textContent =
-            "Welcome aboard.";
-
-        scoreDescription.textContent =
-            "There is absolutely no legroom.";
-
-    }
-
-}
+updateMessage();
