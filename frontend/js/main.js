@@ -114,14 +114,17 @@ dropZone.addEventListener("drop", function(event) {
     // If person is not already inside
     if (!dropZone.contains(draggedPerson)) {
 
-        dropZone.appendChild(draggedPerson);
+    dropZone.appendChild(draggedPerson);
 
-        count++;
+    count++;
 
-        updateCounter();
+    updateCounter();
 
-        showMessage();
-    }
+    showMessage();
+
+    // Automatically create a replacement person
+    createPerson();
+}
 
 
     // ==========================================
@@ -212,7 +215,26 @@ function showMessage() {
     }
 }
 
+// ==========================================
+// CREATE A NEW PERSON
+// ==========================================
 
+function createPerson() {
+
+    const person = document.createElement("div");
+
+    person.classList.add("person", "draggable");
+
+    person.setAttribute("draggable", "true");
+
+    person.textContent = "🧍";
+
+    // Add the new person to the people panel
+    peopleContainer.appendChild(person);
+
+    // Make the new person draggable
+    makePersonDraggable(person);
+}
 // ==========================================
 // ADD A NEW PERSON
 // ==========================================
