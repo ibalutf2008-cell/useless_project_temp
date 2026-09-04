@@ -12,7 +12,9 @@ const addPersonBtn = document.getElementById("addPersonBtn");
 const resetBtn = document.getElementById("resetBtn");
 
 const objectName = document.getElementById("objectName");
-const statusMessage = document.getElementById("statusMessage");
+
+const scoreTitle = document.getElementById("scoreTitle");
+const scoreDescription = document.getElementById("scoreDescription");
 
 const objectButtons = document.querySelectorAll(".object-btn");
 
@@ -111,20 +113,23 @@ dropZone.addEventListener("drop", function(event) {
     }
 
 
-    // If person is not already inside
+    // ==========================================
+    // IF PERSON IS NOT ALREADY INSIDE
+    // ==========================================
+
     if (!dropZone.contains(draggedPerson)) {
 
-    dropZone.appendChild(draggedPerson);
+        dropZone.appendChild(draggedPerson);
 
-    count++;
+        count++;
 
-    updateCounter();
+        updateCounter();
 
-    showMessage();
+        showMessage();
 
-    // Automatically create a replacement person
-    createPerson();
-}
+        // Automatically create a replacement person
+        createPerson();
+    }
 
 
     // ==========================================
@@ -168,52 +173,74 @@ function showMessage() {
 
     if (count === 0) {
 
-        statusMessage.textContent =
-            "Nobody has entered yet. They're probably smarter than us.";
+        scoreTitle.textContent =
+            "It's looking pretty empty...";
 
+        scoreDescription.textContent =
+            "Start dragging people. We have absolutely no reason to be doing this.";
     }
+
 
     else if (count === 1) {
 
-        statusMessage.textContent =
-            "One person. Very reasonable. This won't last.";
+        scoreTitle.textContent =
+            "One person.";
 
+        scoreDescription.textContent =
+            "Very reasonable. This won't last.";
     }
+
 
     else if (count === 2) {
 
-        statusMessage.textContent =
-            "Two people. Things are getting suspicious.";
+        scoreTitle.textContent =
+            "Two people.";
 
+        scoreDescription.textContent =
+            "Things are getting suspicious.";
     }
+
 
     else if (count < 5) {
 
-        statusMessage.textContent =
-            "Okay... this is starting to become unnecessary.";
+        scoreTitle.textContent =
+            "Okay...";
 
+        scoreDescription.textContent =
+            "This is starting to become unnecessary.";
     }
+
 
     else if (count < 10) {
 
-        statusMessage.textContent =
-            "There are definitely better things you could be doing.";
+        scoreTitle.textContent =
+            "This is getting crowded.";
 
+        scoreDescription.textContent =
+            "There are definitely better things you could be doing.";
     }
+
 
     else if (count < 20) {
 
-        statusMessage.textContent =
-            "At this point, you're just collecting humans.";
+        scoreTitle.textContent =
+            "At this point...";
 
+        scoreDescription.textContent =
+            "You're just collecting humans.";
     }
+
 
     else {
 
-        statusMessage.textContent =
+        scoreTitle.textContent =
             "BRO. THERE ARE TOO MANY PEOPLE.";
+
+        scoreDescription.textContent =
+            "Please stop. There is absolutely no reason for this.";
     }
 }
+
 
 // ==========================================
 // CREATE A NEW PERSON
@@ -229,35 +256,23 @@ function createPerson() {
 
     person.textContent = "🧍";
 
+
     // Add the new person to the people panel
     peopleContainer.appendChild(person);
+
 
     // Make the new person draggable
     makePersonDraggable(person);
 }
+
+
 // ==========================================
-// ADD A NEW PERSON
+// ADD A NEW PERSON BUTTON
 // ==========================================
 
 addPersonBtn.addEventListener("click", function() {
 
-    const person = document.createElement("div");
-
-    person.classList.add("person", "draggable");
-
-    person.setAttribute("draggable", "true");
-
-    person.textContent = "🧍";
-
-
-    // Add person to people panel
-
-    peopleContainer.appendChild(person);
-
-
-    // Make the new person draggable
-
-    makePersonDraggable(person);
+    createPerson();
 
 });
 
@@ -269,14 +284,12 @@ addPersonBtn.addEventListener("click", function() {
 resetBtn.addEventListener("click", function() {
 
     // Find all people currently inside the object
-
     const peopleInside = dropZone.querySelectorAll(".person");
 
 
     peopleInside.forEach(person => {
 
         // Move them back to the people panel
-
         person.style.position = "static";
 
         person.style.left = "";
@@ -290,7 +303,6 @@ resetBtn.addEventListener("click", function() {
 
 
     // Reset count
-
     count = 0;
 
     updateCounter();
@@ -309,19 +321,16 @@ objectButtons.forEach(button => {
     button.addEventListener("click", function() {
 
         // Remove active class from all buttons
-
         objectButtons.forEach(btn => {
             btn.classList.remove("active");
         });
 
 
         // Make clicked button active
-
         button.classList.add("active");
 
 
         // Get selected object
-
         const selectedObject = button.dataset.object;
 
 
@@ -344,8 +353,11 @@ function changeObject(object) {
 
         dropZone.className = "drop-zone pool";
 
-        statusMessage.textContent =
-            "Welcome to the pool. Please leave your dignity at the door.";
+        scoreTitle.textContent =
+            "Welcome to the pool.";
+
+        scoreDescription.textContent =
+            "Please leave your dignity at the door.";
 
     }
 
@@ -356,7 +368,10 @@ function changeObject(object) {
 
         dropZone.className = "drop-zone elevator";
 
-        statusMessage.textContent =
+        scoreTitle.textContent =
+            "Welcome to the elevator.";
+
+        scoreDescription.textContent =
             "How many people before someone starts breathing manually?";
 
     }
@@ -368,7 +383,10 @@ function changeObject(object) {
 
         dropZone.className = "drop-zone bathtub";
 
-        statusMessage.textContent =
+        scoreTitle.textContent =
+            "A bathtub.";
+
+        scoreDescription.textContent =
             "A completely normal place to put several people.";
 
     }
@@ -380,7 +398,10 @@ function changeObject(object) {
 
         dropZone.className = "drop-zone bed";
 
-        statusMessage.textContent =
+        scoreTitle.textContent =
+            "Sleepover time.";
+
+        scoreDescription.textContent =
             "Sleepover has gotten slightly out of hand.";
 
     }
@@ -392,7 +413,10 @@ function changeObject(object) {
 
         dropZone.className = "drop-zone car";
 
-        statusMessage.textContent =
+        scoreTitle.textContent =
+            "Everyone's coming.";
+
+        scoreDescription.textContent =
             "Road trip? More like human Tetris.";
 
     }
@@ -404,8 +428,11 @@ function changeObject(object) {
 
         dropZone.className = "drop-zone airplane";
 
-        statusMessage.textContent =
-            "Welcome aboard. There is absolutely no legroom.";
+        scoreTitle.textContent =
+            "Welcome aboard.";
+
+        scoreDescription.textContent =
+            "There is absolutely no legroom.";
 
     }
 
