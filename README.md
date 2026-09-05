@@ -11,7 +11,9 @@
 - Member 2: Aiswarya Biju - Model Engineering College
 
 ### Project Description
-Face2Fate is a completely useless and highly entertaining website that looks at your face and predicts things it absolutely cannot know. Upload a face and let it predict your height, ur future car, number of kids, your romantic destiny and can even leave you some roasts!!
+Face2Fate is a completely useless and highly entertaining website that looks at your face and predicts things it absolutely cannot know. 
+
+Upload a face and let it predict your height, ur future car, number of kids, your romantic destiny and can even leave you some roasts!!
 
 ### The Problem (that doesn't exist)
 Imagine just seeing a guy on the metro one day and thinking "Hmm....this person probably owns 3 BMW'S, has no kids and is still unmarried?"
@@ -51,9 +53,13 @@ For Software:
 For Software:
 # Installation
 #Clone the repository
+
+
 git clone <your-github-repository-link>
 
 #Navigate into your project folder
+
+
 cd frontend 
 
 # Run
@@ -63,33 +69,41 @@ cd frontend
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+!([Initial setup](https://drive.google.com/file/d/1Ql8QJSkRHDLnx7To-G9W5IWrS67CU6Un/view?usp=sharing))
+*Initial display*
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+!(([Final](https://drive.google.com/file/d/1Cu-8rOHfxfv2juJtT8LFcsj1FD3itnG4/view?usp=sharing))
+*Final Result Display*
 
 # Diagrams
-User
-↓
-Face2Fate Website
-↓
-Upload / Capture Face Photo
-↓
-Image Processing
-↓
-Face Detection & Feature Extraction
-↓
-Face2Fate Analysis Logic
-↓
-Generate Fun Personality / Fate Results
-↓
-Display Results on Website
-↓
-User Views, Reacts & Tries Again
+                ┌─────────────────┐
+                │      USER       │
+                └────────┬────────┘
+                         ↓
+                ┌─────────────────┐
+                │   Face2Fate UI  │
+                └────────┬────────┘
+                         ↓
+                ┌─────────────────┐
+                │ Image Upload /  │
+                │    Capture      │
+                └────────┬────────┘
+                         ↓
+                ┌─────────────────┐
+                │ Face Processing │
+                └────────┬────────┘
+                         ↓
+                ┌─────────────────┐
+                │ Face2Fate Logic │
+                └────────┬────────┘
+                         ↓
+                ┌─────────────────┐
+                │  Fun Results    │
+                └────────┬────────┘
+                         ↓
+                ┌─────────────────┐
+                │   Results UI    │
+                └─────────────────┘
 
 ### Project Demo
 # Video
@@ -98,11 +112,6 @@ User Views, Reacts & Tries Again
 
 # Live deployed Link
 https://face2fatexx.onrender.com/
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
