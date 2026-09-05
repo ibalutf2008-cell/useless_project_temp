@@ -62,17 +62,28 @@ git clone <your-github-repository-link>
 
 cd frontend 
 
+
 # Run
-[commands]
+The Face2Fate project is deployed on Render and can be accessed directly through the deployed application.
+
+Live Demo: [[Deployed Link](https://face2fatexx.onrender.com/)]
+
+No local installation is required to try the deployed version.
+
+
 
 ### Project Documentation
 For Software:
 
 # Screenshots (Add at least 3)
-!([Initial setup](https://drive.google.com/file/d/1Ql8QJSkRHDLnx7To-G9W5IWrS67CU6Un/view?usp=sharing))
+[[Initial setup](https://drive.google.com/file/d/1Ql8QJSkRHDLnx7To-G9W5IWrS67CU6Un/view?usp=sharing)]]
+
+
 *Initial display*
 
-!(([Final](https://drive.google.com/file/d/1Cu-8rOHfxfv2juJtT8LFcsj1FD3itnG4/view?usp=sharing))
+[[Final](https://drive.google.com/file/d/1W-QwSvaZFkr6VwQ_NSKAEVeM9wgwgOqg/view?usp=sharing)]
+
+
 *Final Result Display*
 
 # Diagrams
@@ -107,11 +118,8 @@ For Software:
 
 ### Project Demo
 # Video
-[[Add your demo video link here](https://drive.google.com/file/d/16hsVCqV4ATCERTbB6hmh_Vmhw3x3PCi9/view?usp=sharing)]
+[[Demo Video Link](https://drive.google.com/file/d/16hsVCqV4ATCERTbB6hmh_Vmhw3x3PCi9/view?usp=sharing)]
 
-
-# Live deployed Link
-https://face2fatexx.onrender.com/
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
