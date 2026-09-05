@@ -76,7 +76,7 @@ No local installation is required to try the deployed version.
 For Software:
 
 # Screenshots (Add at least 3)
-[[Initial setup](https://drive.google.com/file/d/1Ql8QJSkRHDLnx7To-G9W5IWrS67CU6Un/view?usp=sharing)]]
+[[Initial setup](https://drive.google.com/file/d/1Ql8QJSkRHDLnx7To-G9W5IWrS67CU6Un/view?usp=sharing)]
 
 
 *Initial display*
