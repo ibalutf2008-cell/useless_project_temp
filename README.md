@@ -14,8 +14,12 @@
 Face2Fate is a completely useless and highly entertaining website that looks at your face and predicts things it absolutely cannot know. Upload a face and let it predict your height, ur future car, number of kids, your romantic destiny and can even leave you some roasts!!
 
 ### The Problem (that doesn't exist)
-Imagine just seeing a guy on the metro one day and thinking "Hmm....this person probably owns 3 BMW'S, has no kids and is still unmarried?" \\
-No? Exactly. \\
+Imagine just seeing a guy on the metro one day and thinking "Hmm....this person probably owns 3 BMW'S, has no kids and is still unmarried?"
+
+
+No? Exactly. 
+
+
 There was absolutely no reliability in predicting a person's future just by staring at their face for 4 seconds. Humanity was suffering from a problem it didn't know it had.
 
 ### The Solution (that nobody asked for)
